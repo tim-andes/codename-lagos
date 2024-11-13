@@ -7,7 +7,7 @@ from analyze_images import analyze_image
 # load environment variables
 load_dotenv()
 # title of the streamlit app
-st.title(f""":rainbow[Image Analysis with Amazon Bedrock and Anthropic Claude 3]""")
+st.title(f""":rainbow[Codename: Lagos. Document analysis research assistant.]""")
 # directions on what can be done with this streamlit app
 st.header(f"""Directions to use this application:
 1. Upload an image, and click the "Analyze Image" button.
@@ -22,7 +22,7 @@ with st.container():
     # when an image is uploaded it saves the file to the directory, and creates a path to that image
     File = st.file_uploader('Upload an Image', type=["png", "jpg", "jpeg"], key="new")
     # this is the text area that allows you to insert a custom JSON spec to control image analysis
-    JSON_format = st.text_area("(optional)Insert your custom JSON spec to control image analysis")
+    JSON_format = st.text_area("(optional) Insert your custom JSON spec to control image analysis")
     # this is the text that is shown on the front end, and is used as a default prompt
     text = f"Analyze this image in extreme detail. Please return a JSON response with the most relevant details of the image. If present, use this example JSON to categorize the image{JSON_format}"
     # this is the button that triggers the invocation of the model, processing of the image and/or question
