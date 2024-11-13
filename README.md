@@ -1,11 +1,7 @@
-# Amazon-Bedrock-Image-Analysis-POC
-
-This is sample code demonstrating the use of Amazon Bedrock and Multi-Modal Generative AI models from Anthropic to implement an image analysis use case. The application is constructed with a simple streamlit frontend where users can upload a 1 page jpeg, png or PDF and get a description of the image.
-
 ![Screen shot of the Codename Lago UI](images/screenshot.png)
 # **Goal of this Repo:**
 
-The goal of this repo is to provide users with the ability to analyze images with Generative AI. This can be integrated into applications like image classification, reverse image lookup, object detection and more. This repo comes iwth a basic streamlit front-end to help users stand up a proof of concept and experiment with image analysis use-cases quickly.
+The goal of this repo is to provide users with the ability to analyze declassified NHI/UAP documents with GenerativeAI.
 
 When a user interacts with the GenAI app, the flow is as follows:
 
@@ -25,7 +21,7 @@ When a user interacts with the GenAI app, the flow is as follows:
 The first step of utilizing this repo is performing a git clone of the repository.
 
 ```
-git clone https://github.com/aws-samples/genai-quickstart-pocs.git
+git clone https://github.com/tim-andes/codename-lagos.git
 ```
 
 After cloning the repo onto your local machine, open it up in your favorite code editor. The file structure of this repo is broken into 3 key files,
