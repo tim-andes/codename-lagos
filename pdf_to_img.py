@@ -1,1 +1,0 @@
-# TO DO - Write a script to convert PDF to images 
