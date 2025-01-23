@@ -1,7 +1,8 @@
-import streamlit as st
+import analyze_images
 from pathlib import Path
 import os
-from analyze_images import analyze_image
+import streamlit as st
+import sys
 
 # title of the streamlit app
 st.title(f""":rainbow[Codename: Lagos. Document analysis research assistant.]""")
@@ -19,11 +20,11 @@ with st.container():
     # when document is uploaded it saves the file to the directory, and creates a path to the document
     File = st.file_uploader('Upload document', type=["png", "jpg", "jpeg"], key="new")
     # this is the text area that allows you to insert a custom JSON spec to contrdocument analysis
-    text_area = st.text_area("(optional) Insert extra request details here.")
+    # text_area = st.text_area("(optional) Insert extra request details here.")
     # this is the text that is shown on the front end, and is used as a default prompt
-    text = f"Analyze this document in extreme detail. Please return a JSON response with the most relevant details of the document. If present, use this example JSON to categorize the document{text_area}"
+    # text = f"Analyze this document in extreme detail. Please return a JSON response with the most relevant details of the document. If present, use this example JSON to categorize the document{text_area}"
     # this is the button that triggers the invocation of the model, processing of tdocument and/or question
-    result = st.button("Analyze Document")
+    result = st.button("Analyze Document(s)")
     # if the button is pressed, the model is invoked, and the results are output to the front end
     if result:
         # if document is uploaded, a file will be present, triggering tdocument_to_text function
@@ -42,7 +43,10 @@ with st.container():
                 # write a success message saying the image has been successfully saved
                 st.success(f'Image {File.name} is successfully saved!')
                 # running the image to text task, and outputting the results to the front end
-                st.write(analyze_image(save_path, text))
+                obj = analyze_images.Query()
+                response = obj.multiple_image_prompt(" ".join(sys.argv[1:]))
+                st.write(response.text)
+                
                 # removing the image file that was temporarily saved to perform the question and answer task
                 os.remove(save_path)
 
