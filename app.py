@@ -14,13 +14,15 @@ documents and your general knowledge.
 """
 
 # title of the streamlit app
-st.title(f""":rainbow[Codename: Lagos. Document analysis research assistant.]""")
+st.title(f"""Codename: Lagos.
+A document analysis research assistant.
+""")
 # directions on what can be done with this streamlit app
 st.header(f"""How to Use:
 1. Upload any number of declassified documents (currently requires JPG, PDF capability coming soon).
-2. Click the "Analyze Document" button.
+2. Click the "Analyze Document(s)" button.
 
-""", divider='rainbow')
+""")
 # default container that houses the document upload field
 with st.container():
     # header that is shown on the web UI
@@ -39,7 +41,7 @@ with st.container():
         if image_list is not None:
             image_paths = []
             # document is displayed to the front end for the user to see
-            st.image(image_list[0])
+            st.image(image_list[0], width=400)
             # determine the path to temporarily save the image file that was uploaded
             save_folder = "./images"
             # create a posix path of save_folder and the file names
