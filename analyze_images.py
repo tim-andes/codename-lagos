@@ -22,12 +22,14 @@ class Query:
             images = []
 
             for image_path in image_paths:
+                print(type(image_path))
                 image = Image.open(image_path)
+                print(type(image))
                 images.append(image)
                
             response = model.generate_content([query, *images])
 
-            print(response.text)           
+            # print(response.text)           
 
             return response.text
         
