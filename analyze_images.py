@@ -10,7 +10,7 @@ class Query:
                 with open("config.ini", "r") as f:
                     key = f.read().strip() 
             except FileNotFoundError:
-                raise FileNotFoundError("api_key.txt not found. Please create this file and add your API key.")
+                raise FileNotFoundError("config.ini file not found. Please create this file and add your API key.")
 
             genai.configure(api_key=key)
 
