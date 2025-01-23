@@ -16,9 +16,9 @@ documents and your general knowledge.
 # title of the streamlit app
 st.title(f""":rainbow[Codename: Lagos. Document analysis research assistant.]""")
 # directions on what can be done with this streamlit app
-st.header(f"""Directions to use this application:
-1. Upload a PDF (currently requires PDF to JPG conversion) and click the "Analyze Document" button.
-2. Optionally, input a JSON spec to control image analysis prompt and return to specific attributes
+st.header(f"""How to Use:
+1. Upload any number of declassified documents (currently requires JPG, PDF capability coming soon).
+2. Click the "Analyze Document" button.
 
 """, divider='rainbow')
 # default container that houses the document upload field
@@ -30,9 +30,8 @@ with st.container():
     image_list = st.file_uploader('Upload document', type=["png", "jpg", "jpeg"], key="new", accept_multiple_files=True)
     # this is the text area that allows you to insert a custom JSON spec to contrdocument analysis
     # text_area = st.text_area("(optional) Insert extra request details here.")
-    # this is the text that is shown on the front end, and is used as a default prompt
-    # text = f"Analyze this document in extreme detail. Please return a JSON response with the most relevant details of the document. If present, use this example JSON to categorize the document{text_area}"
-    # this is the button that triggers the invocation of the model, processing of tdocument and/or question
+
+    # this is the button that triggers the invocation of the model; processing of one or many images
     result = st.button("Analyze Document(s)")
     # if the button is pressed, the model is invoked, and the results are output to the front end
     if result:
@@ -51,10 +50,10 @@ with st.container():
                 with open(save_path, mode='wb') as w:
                         w.write(image.getvalue())
 
-                # once the save path exists...
-                if save_path.exists():
+            # once the save paths exist...
+            if image_paths[0].exists():
                     # write a success message saying the image has been successfully saved
-                    st.success(f'Image successfully saved!')
+                    st.success(f'Images received. Processing...')
             # running the image to text task, and outputting the results to the front end
             obj = analyze_images.Query()
             response = obj.multiple_image_prompt(system_prompt, image_paths)

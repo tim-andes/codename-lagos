@@ -1,11 +1,4 @@
-# import os
-import sys
-# import re
-import base64
-# import httpx 
-# import pathlib
 from PIL import Image
-
 import google.generativeai as genai
 import google.generativeai.types.safety_types as safetype
 
@@ -13,7 +6,13 @@ class Query:
         def __init__(self):
             """
             """
-            genai.configure(api_key="AIzaSyA5nKFXdBRr6A4unM9v7NGbJEGMr2sa8Qc")
+            try:
+                with open("config.ini", "r") as f:
+                    key = f.read().strip() 
+            except FileNotFoundError:
+                raise FileNotFoundError("api_key.txt not found. Please create this file and add your API key.")
+
+            genai.configure(api_key=key)
 
         def multiple_image_prompt(self, query, image_paths):
             model = genai.GenerativeModel(model_name="gemini-1.5-flash",
