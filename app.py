@@ -2,7 +2,6 @@ import analyze_images
 from pathlib import Path
 import os
 import streamlit as st
-import sys
 
 system_prompt = """
 
@@ -29,7 +28,10 @@ with st.container():
     st.subheader('Document File Upload:')
     # document upload field, the specific ui element that allows you to upload the document
     # when document is uploaded it saves the file(s) to the directory, and creates a path to the document
-    image_list = st.file_uploader('Upload document', type=["png", "jpg", "jpeg"], key="new", accept_multiple_files=True)
+    try: 
+        image_list = st.file_uploader('Upload document', type=["png", "jpg", "jpeg", "pdf"], key="new", accept_multiple_files=True)
+    except TypeError:
+         raise TypeError("Unsupported file type. Please submit PDF, JPG, or PNG.")
     # this is the text area that allows you to insert a custom JSON spec to contrdocument analysis
     # text_area = st.text_area("(optional) Insert extra request details here.")
 
