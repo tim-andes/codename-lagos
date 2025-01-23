@@ -9,38 +9,30 @@ from PIL import Image
 import google.generativeai as genai
 import google.generativeai.types.safety_types as safetype
 
-system_prompt = """
-
-You are an Unidentified Aerial Phenomena and Nonhuman Intelligence researcher. 
-Your job is to analyze documents containing text, images, tables, and redacted 
-information and find trends, patterns, outliers, and make connections between
-documents and your general knowledge.
-
-"""
 class Query:
         def __init__(self):
             """
             """
             genai.configure(api_key="AIzaSyA5nKFXdBRr6A4unM9v7NGbJEGMr2sa8Qc")
 
-        def multiple_image_prompt(self, query):
+        def multiple_image_prompt(self, query, image_paths):
             model = genai.GenerativeModel(model_name="gemini-1.5-flash",
-                system_instruction=system_prompt,
+                system_instruction=query,
                 safety_settings=safetype.LooseSafetySettingDict())
-   
-            image_path_1 = "../../pdf-fbi-scrape/image_output/page_1.jpg"  # Replace with the actual path to your first image
-            image_path_2 = "../../pdf-fbi-scrape/image_output/page_2.jpg" # Replace with the actual path to your second image
-
-            image_file_1 = Image.open(image_path_1)
-            image_file_2 = Image.open(image_path_2)
             
-            response = model.generate_content([system_prompt, image_file_1, image_file_2])
+            images = []
+
+            for image_path in image_paths:
+                image = Image.open(image_path)
+                images.append(image)
+               
+            response = model.generate_content([query, *images])
 
             print(response.text)           
 
-            return response
+            return response.text
         
 if __name__ == "__main__":
         
         obj = Query()
-        obj.multiple_image_prompt(" ".join(sys.argv[1:]))
+        obj.multiple_image_prompt()

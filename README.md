@@ -4,5 +4,5 @@ This is an MVP of a document analysis AI-based research assistant. Originally us
 
 ## To Do
 - [X] Replace AWS Bedrock with Ollama Llama3.2 (or :vision) FM
-- [ ] Integrate PDF to Image module
+- [X] Replace Ollama with Gemini API
 - [ ] Set up LLM to ingest more than one image at a time
