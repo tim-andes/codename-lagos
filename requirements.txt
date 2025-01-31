@@ -1,5 +1,6 @@
 grpcio==1.67.1
 google-generativeai
-pillow
 pdf2image
+pillow
+PyPDF2
 streamlit

@@ -1,6 +1,8 @@
 import analyze_images
+import pdf_to_image
 from pathlib import Path
 import os
+import re
 import streamlit as st
 
 system_prompt = """
@@ -29,7 +31,7 @@ with st.container():
     # document upload field, the specific ui element that allows you to upload the document
     # when document is uploaded it saves the file(s) to the directory, and creates a path to the document
     try: 
-        docs_list = st.file_uploader('Upload document', type=["png", "jpg", "jpeg", "pdf"], key="new", accept_multiple_files=True)
+        docs_list = st.file_uploader('Upload document(s)', type=["png", "jpg", "jpeg", "pdf"], key="new", accept_multiple_files=True)
     except TypeError:
          raise TypeError("Unsupported file type. Please submit PDF, JPG, or PNG.")
     # this is the text area that allows you to insert a custom JSON spec to contrdocument analysis
@@ -42,29 +44,37 @@ with st.container():
         # if document is uploaded, a file will be present, triggering document_to_text function
         if docs_list is not None:
             doc_paths = []
-            # document is displayed to the front end for the user to see
-            st.image(docs_list[0], width=400)
-            # determine the path to temporarily save the image file that was uploaded
-            save_folder = "./images"
-            # create a posix path of save_folder and the file names
-            for doc in docs_list:
-                save_path = Path(save_folder, doc.name)
-                doc_paths.append(save_path)
-                # write the uploaded doc files to the save_folder specified above
-                with open(save_path, mode='wb') as w:
-                        w.write(doc.getvalue())
+    
+            # if image, thumbnail is displayed to the front end for the user to see
+            print("First file: ", docs_list[0])
+            match_pdf = r"(?i)pdf"
+            match_image = r"(?i)jpg|jpeg|png"
+            try:
+                if re.search(match_image, str(docs_list[0])):
+                    st.image(docs_list[0], width=400)
+            finally:
+                # determine the path to temporarily save the image file that was uploaded
+                save_folder = "./images"
 
-            # once the save paths exist...
-            if doc_paths[0].exists():
-                # write a success message saying the doc has been successfully saved
-                st.success(f'Document(s) received. Processing...')
-            # running the doc to text task, and outputting the results to the front end
-            obj = analyze_images.Query()
-            response = obj.multiple_image_prompt(system_prompt, doc_paths)
+                # create a posix path of save_folder and the file names
+                for doc in docs_list:
+                    save_path = Path(save_folder, doc.name)
+                    doc_paths.append(save_path)
+                    # write the uploaded doc files to the save_folder specified above
+                    with open(save_path, mode='wb') as w:
+                            w.write(doc.getvalue())
 
-            st.write(response)
-            
-            # removing the image file that was temporarily saved to perform the question and answer task
-            for save_path in doc_paths:
-                os.remove(save_path)
+                # once the save paths exist...
+                if doc_paths[0].exists():
+                    # write a success message saying the doc has been successfully saved
+                    st.success(f'Document(s) received. Processing...')
+                # running the doc to text task, and outputting the results to the front end
+                obj = analyze_images.Query()
+                response = obj.multiple_doc_prompt(system_prompt, doc_paths)
+
+                st.write(response)
+                
+                # removing the image file that was temporarily saved to perform the question and answer task
+                for save_path in doc_paths:
+                    os.remove(save_path)
 
